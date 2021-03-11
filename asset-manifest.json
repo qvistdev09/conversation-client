@@ -1,23 +1,22 @@
 {
   "files": {
-    "main.css": "/conversation-client/static/css/main.9d5b29c0.chunk.css",
-    "main.js": "/conversation-client/static/js/main.9fe15ffe.chunk.js",
-    "main.js.map": "/conversation-client/static/js/main.9fe15ffe.chunk.js.map",
-    "runtime-main.js": "/conversation-client/static/js/runtime-main.d41e507a.js",
-    "runtime-main.js.map": "/conversation-client/static/js/runtime-main.d41e507a.js.map",
-    "static/js/2.c4c657ce.chunk.js": "/conversation-client/static/js/2.c4c657ce.chunk.js",
-    "static/js/2.c4c657ce.chunk.js.map": "/conversation-client/static/js/2.c4c657ce.chunk.js.map",
-    "static/js/3.ecea4d13.chunk.js": "/conversation-client/static/js/3.ecea4d13.chunk.js",
-    "static/js/3.ecea4d13.chunk.js.map": "/conversation-client/static/js/3.ecea4d13.chunk.js.map",
+    "main.css": "/conversation-client/static/css/main.d3c2e42d.chunk.css",
+    "main.js": "/conversation-client/static/js/main.5ff64066.chunk.js",
+    "main.js.map": "/conversation-client/static/js/main.5ff64066.chunk.js.map",
+    "runtime-main.js": "/conversation-client/static/js/runtime-main.0500693b.js",
+    "runtime-main.js.map": "/conversation-client/static/js/runtime-main.0500693b.js.map",
+    "static/js/2.31b34135.chunk.js": "/conversation-client/static/js/2.31b34135.chunk.js",
+    "static/js/2.31b34135.chunk.js.map": "/conversation-client/static/js/2.31b34135.chunk.js.map",
+    "static/js/3.405a1ee9.chunk.js": "/conversation-client/static/js/3.405a1ee9.chunk.js",
+    "static/js/3.405a1ee9.chunk.js.map": "/conversation-client/static/js/3.405a1ee9.chunk.js.map",
     "index.html": "/conversation-client/index.html",
-    "static/css/main.9d5b29c0.chunk.css.map": "/conversation-client/static/css/main.9d5b29c0.chunk.css.map",
-    "static/js/2.c4c657ce.chunk.js.LICENSE.txt": "/conversation-client/static/js/2.c4c657ce.chunk.js.LICENSE.txt",
-    "static/media/logo.6ce24c58.svg": "/conversation-client/static/media/logo.6ce24c58.svg"
+    "static/css/main.d3c2e42d.chunk.css.map": "/conversation-client/static/css/main.d3c2e42d.chunk.css.map",
+    "static/js/2.31b34135.chunk.js.LICENSE.txt": "/conversation-client/static/js/2.31b34135.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d41e507a.js",
-    "static/js/2.c4c657ce.chunk.js",
-    "static/css/main.9d5b29c0.chunk.css",
-    "static/js/main.9fe15ffe.chunk.js"
+    "static/js/runtime-main.0500693b.js",
+    "static/js/2.31b34135.chunk.js",
+    "static/css/main.d3c2e42d.chunk.css",
+    "static/js/main.5ff64066.chunk.js"
   ]
 }
