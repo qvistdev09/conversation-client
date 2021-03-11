@@ -1,8 +1,13 @@
 import React from 'react';
 import 'components/Header.scss';
 
-const Header = () => {
-  return <header className='header'>Some header text</header>;
+const Header = ({ children }) => {
+  return (
+    <header className='header'>
+      <p>App title</p>
+      {children}
+    </header>
+  );
 };
 
 export default Header;
