@@ -14,6 +14,8 @@ import Chat from 'components/Chat';
 import ChatContent from 'components/Chat-Content';
 import Users from 'components/Users';
 
+import { icons } from 'assets/icon-provider';
+
 const App = () => {
   const [userlist, setUserlist] = useState([]);
   const [channelList, setChannelList] = useState([]);
