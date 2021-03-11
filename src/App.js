@@ -9,17 +9,17 @@ import getServer from 'config/server-url';
 const nodeEnv = process.env.NODE_ENV;
 
 const App = () => {
-  const [serverGreeting, setServerGreeting] = useState('waiting for server response');
+  const [userlist, setUserlist] = useState([]);
   const client = useRef();
 
   useEffect(() => {
     client.current = io(getServer());
     const socket = client.current;
-    socket.on('connection-test', message => setServerGreeting(message));
+    socket.on('userlist', usersArray => setUserlist(usersArray));
 
     return () => {
       socket.close();
-    }
+    };
   }, []);
 
   return (
@@ -31,10 +31,10 @@ const App = () => {
         </p>
         <p>The node environment is: {nodeEnv}</p>
         <p>The server is: {getServer()}</p>
-        <p>Connection test: {serverGreeting}</p>
-        <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
+        <h2>Connected:</h2>
+        {userlist.map(user => (
+          <p key={user.pubId}>{user.name}</p>
+        ))}
       </header>
     </div>
   );
