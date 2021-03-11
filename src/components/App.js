@@ -47,6 +47,10 @@ const App = () => {
     client.current.emit('create-channel', label);
   };
 
+  const setUserName = newUsername => {
+    client.current.emit('update-name', newUsername);
+  };
+
   const getName = id => {
     const match = userlist.find(user => user.pubId === id);
     return match ? match.name : 'Missing userinfo';
@@ -55,7 +59,7 @@ const App = () => {
   return (
     <div className='app'>
       <Header>
-        <User userName={getName(userId)} />
+        <User userName={getName(userId)} setUserName={setUserName} />
       </Header>
       <Conversations
         channelList={channelList}
