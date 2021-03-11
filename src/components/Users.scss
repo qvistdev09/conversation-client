@@ -1,3 +1,8 @@
 .users {
   grid-area: users;
 }
+
+.users__row {
+  display: flex;
+  align-items: center;
+}

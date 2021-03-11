@@ -8,13 +8,12 @@ import 'components/App.scss';
 
 import Header from 'components/Header';
 import User from 'components/Header-User';
+import UserIcon from 'components/UserIcon';
 import Conversations from 'components/Conversations';
 import AddChannelBtn from 'components/Conversations-Add-Channel-Btn';
 import Chat from 'components/Chat';
 import ChatContent from 'components/Chat-Content';
 import Users from 'components/Users';
-
-import { icons } from 'assets/icon-provider';
 
 const App = () => {
   const [userlist, setUserlist] = useState([]);
@@ -63,6 +62,19 @@ const App = () => {
     return match ? match.name : 'Missing';
   };
 
+  const getColor = id => {
+    const match = userlist.find(user => user.pubId === id);
+    return match ? match.color : '#89f0a4';
+  };
+
+  const getIcon = id => {
+    const match = userlist.find(user => user.pubId === id);
+    if (match && match.icon) {
+      return match.icon
+    }
+    return '0';
+  };
+
   const alertTyping = () => {
     client.current.emit('is-typing');
   };
@@ -89,7 +101,9 @@ const App = () => {
   return (
     <div className='app'>
       <Header>
-        <User userName={getName(userId)} setUserName={setUserName} />
+        <User userName={getName(userId)} setUserName={setUserName}>
+          <UserIcon icon={getIcon(userId)} background={getColor(userId)} status />
+        </User>
       </Header>
       <Conversations
         channelList={channelList}

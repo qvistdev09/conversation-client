@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const User = ({ userName, setUserName }) => {
+const User = ({ userName, setUserName, children }) => {
   const [usernameEdit, setUsernameEdit] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -21,7 +21,7 @@ const User = ({ userName, setUserName }) => {
   const startEdit = () => {
     setInputValue(userName);
     setUsernameEdit(true);
-  }
+  };
 
   return (
     <div className='header__user'>
@@ -38,6 +38,7 @@ const User = ({ userName, setUserName }) => {
       ) : (
         <button onClick={startEdit}>{userName}</button>
       )}
+      {children}
     </div>
   );
 };

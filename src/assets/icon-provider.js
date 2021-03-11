@@ -1,3 +1,4 @@
+import failSafeIcon from 'assets/icon1.svg'
 const files = require.context('assets', false, /\.svg$/);
 
 const icons = {};
@@ -8,4 +9,6 @@ files.keys().forEach(key => {
   icons[tidyFilename(key)] = files(key);
 });
 
-export { icons };
+const exportIcon = id => icons[id] ? icons[id].default : failSafeIcon;
+
+export { exportIcon };
