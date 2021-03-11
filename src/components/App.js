@@ -70,7 +70,7 @@ const App = () => {
   const getIcon = id => {
     const match = userlist.find(user => user.pubId === id);
     if (match && match.icon) {
-      return match.icon
+      return match.icon;
     }
     return '0';
   };
@@ -114,7 +114,9 @@ const App = () => {
       </Conversations>
       <Chat send={send} messages={messages} alertTyping={alertTyping} usersTyping={formatTypingAlert()}>
         {messages.map(messageObj => (
-          <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id} />
+          <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id}>
+            <UserIcon icon={getIcon(messageObj.by)} size='2.3rem' margin='0' background={getColor(messageObj.by)} />
+          </ChatContent>
         ))}
       </Chat>
       <Users userlist={userlist.filter(user => user.online)} />
