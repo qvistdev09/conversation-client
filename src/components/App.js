@@ -13,12 +13,14 @@ import Users from 'components/Users';
 
 const App = () => {
   const [userlist, setUserlist] = useState([]);
+  const [channelList, setChannelList] = useState([]);
   const client = useRef();
 
   useEffect(() => {
     client.current = io(getServer());
     const socket = client.current;
-    socket.on('userlist', usersArray => setUserlist(usersArray));
+    socket.on('user-list', usersArray => setUserlist(usersArray));
+    socket.on('channel-list', channelsArray => setChannelList(channelsArray));
 
     return () => {
       socket.close();
@@ -28,7 +30,7 @@ const App = () => {
   return (
     <div className='app'>
       <Header />
-      <Conversations />
+      <Conversations channelList={channelList} />
       <Chat />
       <Users userlist={userlist} />
     </div>

@@ -1,3 +1,15 @@
 .conversations {
   grid-area: conversations;
 }
+
+.conversations__channelBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+}
+
+.conversations__channelBtn:hover {
+  color: red;
+}
