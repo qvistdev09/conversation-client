@@ -33,10 +33,14 @@ const User = ({ userName, setUserName, children }) => {
             onChange={e => setInputValue(e.target.value)}
             onBlur={() => setUsernameEdit(false)}
             className='header__username-input'
+            autoComplete='off'
+            required
           />
         </form>
       ) : (
-        <button onClick={startEdit}>{userName}</button>
+        <button className='header__name-btn' onClick={startEdit}>
+          {userName}
+        </button>
       )}
       {children}
     </div>

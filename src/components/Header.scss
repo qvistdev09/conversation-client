@@ -1,10 +1,62 @@
+@import 'styles/variables';
+
 .header {
   grid-area: header;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: $primaryblock;
+  padding: 0.5rem;
+  border-bottom: 2px solid $primarylight;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+}
+
+.header__icon {
+  color: $light;
+  font-size: 2rem;
+  margin: 0 1rem;
+}
+
+.header__title {
+  color: $light;
+  font-weight: 900;
+  font-size: 1rem;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.164);
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
 }
 
 .header__user {
   display: flex;
+  align-items: center;
+}
+
+.header__name-btn {
+  color: $light;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.37);
+  outline: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-right: 0.5rem;
+}
+
+.header__username-input {
+  color: $light;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.192);
+  border: 1px solid rgba(255, 255, 255, 0.37);
+  outline: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-right: 0.5rem;
 }

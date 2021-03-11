@@ -4,7 +4,10 @@ import 'components/Header.scss';
 const Header = ({ children }) => {
   return (
     <header className='header'>
-      <p>App title</p>
+      <div className="header__left">
+        <i className='far fa-comment-dots header__icon'></i>
+        <h1 className='header__title'>conversations</h1>
+      </div>
       {children}
     </header>
   );
