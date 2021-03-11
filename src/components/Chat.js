@@ -24,7 +24,7 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping }) => {
     <main className='chat'>
       <div className='chat__messages'>{children}</div>
       <div>
-        <p>{usersTyping.join(', ')}</p>
+        <p>{usersTyping}</p>
         <form className='chat__form' onSubmit={onSubmit}>
           <input type='text' className='chat__input' value={message} onChange={handleOnChange} />
           <button className='chat__button'>Send</button>

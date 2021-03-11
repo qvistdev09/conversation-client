@@ -66,7 +66,22 @@ const App = () => {
   };
 
   const formatTypingAlert = () => {
-    return usersTyping.filter(id => id !== userId).map(getName);
+    const filtered = usersTyping.filter(id => id !== userId);
+    if (filtered.length === 1) {
+      return `${getName(filtered[0])} is typing`;
+    }
+    if (filtered.length < 3) {
+      let alert = '';
+      filtered.forEach((user, index) => {
+        if (index !== filtered.length - 1) {
+          alert += `${getName(user)}, `;
+        } else {
+          alert += `and ${getName(user)} are typing`;
+        }
+      });
+      return alert;
+    }
+    return 'Several people are typing';
   };
 
   return (
