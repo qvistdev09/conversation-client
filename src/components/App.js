@@ -20,6 +20,7 @@ const App = () => {
   const [activeConversation, setActiveConversation] = useState(0);
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState();
+  const [usersTyping, setUsersTyping] = useState([]);
   const client = useRef();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const App = () => {
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
     socket.on('channel-message', messagesArray => setMessages(messagesArray));
     socket.on('user-id', receivedId => setUserId(receivedId));
+    socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
 
     return () => {
       socket.close();
@@ -59,6 +61,14 @@ const App = () => {
     return match ? match.name : 'Missing';
   };
 
+  const alertTyping = () => {
+    client.current.emit('is-typing');
+  };
+
+  const formatTypingAlert = () => {
+    return usersTyping.filter(id => id !== userId).map(getName);
+  };
+
   return (
     <div className='app'>
       <Header>
@@ -71,7 +81,7 @@ const App = () => {
       >
         <AddChannelBtn createChannel={createChannel} />
       </Conversations>
-      <Chat send={send} messages={messages}>
+      <Chat send={send} messages={messages} alertTyping={alertTyping} usersTyping={formatTypingAlert()}>
         {messages.map(messageObj => (
           <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id} />
         ))}
