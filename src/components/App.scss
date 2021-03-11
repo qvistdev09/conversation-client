@@ -1,0 +1,17 @@
+.app {
+  background-color: rgb(221, 221, 221);
+  width: 100%;
+  max-width: 40rem;
+  height: 100%;
+  max-height: 30rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: max-content 1fr;
+  grid-template-areas:
+    'header header header'
+    'conversations chat users';
+}
+
+.app > * {
+  border: 1px solid black;
+}
