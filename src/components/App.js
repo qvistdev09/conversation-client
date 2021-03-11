@@ -14,6 +14,8 @@ import Users from 'components/Users';
 const App = () => {
   const [userlist, setUserlist] = useState([]);
   const [channelList, setChannelList] = useState([]);
+  const [activeChannel, setActiveChannel] = useState(0);
+  const [messages, setMessages] = useState([]);
   const client = useRef();
 
   useEffect(() => {
@@ -21,17 +23,22 @@ const App = () => {
     const socket = client.current;
     socket.on('user-list', usersArray => setUserlist(usersArray));
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
+    socket.on('channel-message', messagesArray => setMessages(messagesArray));
 
     return () => {
       socket.close();
     };
   }, []);
 
+  const send = message => {
+    client.current.emit('message', { text: message, id: activeChannel });
+  };
+
   return (
     <div className='app'>
       <Header />
-      <Conversations channelList={channelList} />
-      <Chat />
+      <Conversations channelList={channelList} setActiveChannel={setActiveChannel} />
+      <Chat send={send} messages={messages} />
       <Users userlist={userlist} />
     </div>
   );

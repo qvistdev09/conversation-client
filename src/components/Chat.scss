@@ -1,3 +1,20 @@
 .chat {
   grid-area: chat;
+  display: grid;
+  grid-template-rows: 1fr max-content;
+  overflow: hidden;
+}
+
+.chat__form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.chat__messages {
+  overflow-y: scroll;
+}
+
+.chat__input {
+  flex: 1;
 }
