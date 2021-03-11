@@ -18,3 +18,8 @@
 .chat__input {
   flex: 1;
 }
+
+.chat__content-header {
+  display: flex;
+  justify-content: space-between;
+}
