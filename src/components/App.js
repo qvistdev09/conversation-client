@@ -14,7 +14,7 @@ import Users from 'components/Users';
 const App = () => {
   const [userlist, setUserlist] = useState([]);
   const [channelList, setChannelList] = useState([]);
-  const [activeChannel, setActiveChannel] = useState(0);
+  const [activeConversation, setActiveConversation] = useState(0);
   const [messages, setMessages] = useState([]);
   const client = useRef();
 
@@ -31,13 +31,17 @@ const App = () => {
   }, []);
 
   const send = message => {
-    client.current.emit('message', { text: message, id: activeChannel });
+    client.current.emit('message', { text: message, id: activeConversation });
   };
 
   return (
     <div className='app'>
       <Header />
-      <Conversations channelList={channelList} setActiveChannel={setActiveChannel} />
+      <Conversations
+        channelList={channelList}
+        setActiveConversation={setActiveConversation}
+        activeConversation={activeConversation}
+      />
       <Chat send={send} messages={messages} />
       <Users userlist={userlist} />
     </div>
