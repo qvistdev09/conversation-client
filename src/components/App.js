@@ -8,6 +8,7 @@ import 'components/App.scss';
 
 import Header from 'components/Header';
 import Conversations from 'components/Conversations';
+import AddChannelBtn from 'components/Conversations-Add-Channel-Btn';
 import Chat from 'components/Chat';
 import Users from 'components/Users';
 
@@ -39,6 +40,10 @@ const App = () => {
     client.current.emit('set-active', id);
   };
 
+  const createChannel = label => {
+    client.current.emit('create-channel', label);
+  };
+
   return (
     <div className='app'>
       <Header />
@@ -46,7 +51,9 @@ const App = () => {
         channelList={channelList}
         emitActiveConversation={emitActiveConversation}
         activeConversation={activeConversation}
-      />
+      >
+        <AddChannelBtn createChannel={createChannel}/>
+      </Conversations>
       <Chat send={send} messages={messages} />
       <Users userlist={userlist} />
     </div>

@@ -1,7 +1,9 @@
 import React from 'react';
 import 'components/Conversations.scss';
 
-const Conversations = ({ channelList, emitActiveConversation, activeConversation }) => {
+import AddChannelBtn from 'components/Conversations-Add-Channel-Btn';
+
+const Conversations = ({ channelList, emitActiveConversation, activeConversation, children }) => {
   const btnClass = id => {
     const status = id === activeConversation ? 'active' : 'inactive';
     return `conversations__channelBtn conversations__channelBtn--${status}`;
@@ -14,6 +16,7 @@ const Conversations = ({ channelList, emitActiveConversation, activeConversation
           {channel.label}
         </button>
       ))}
+      {children}
     </nav>
   );
 };
