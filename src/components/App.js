@@ -34,12 +34,17 @@ const App = () => {
     client.current.emit('message', { text: message, id: activeConversation });
   };
 
+  const emitActiveConversation = id => {
+    setActiveConversation(id);
+    client.current.emit('set-active', id);
+  };
+
   return (
     <div className='app'>
       <Header />
       <Conversations
         channelList={channelList}
-        setActiveConversation={setActiveConversation}
+        emitActiveConversation={emitActiveConversation}
         activeConversation={activeConversation}
       />
       <Chat send={send} messages={messages} />
