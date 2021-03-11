@@ -1,9 +1,13 @@
+@import 'styles/variables';
+
 .app {
-  background-color: rgb(221, 221, 221);
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: $lightbg;
   width: 100%;
-  max-width: 55rem;
+  max-width: 58rem;
   height: 100%;
-  max-height: 30rem;
+  max-height: 40rem;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: max-content 1fr;
@@ -12,6 +16,9 @@
     'conversations chat users';
 }
 
+/*
 .app > * {
   border: 1px solid black;
 }
+*/
+

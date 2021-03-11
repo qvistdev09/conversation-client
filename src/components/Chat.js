@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, messages, alertTyping, usersTyping }) => {
+const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel }) => {
   const [message, setMessage] = useState('');
 
   const onSubmit = e => {
@@ -22,6 +22,10 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping }) => {
 
   return (
     <main className='chat'>
+      <h2 className='chat__channeltag'>
+        <span>#</span>
+        {currentChannel}
+      </h2>
       <div className='chat__messages'>{children}</div>
       <div>
         <p>{usersTyping}</p>

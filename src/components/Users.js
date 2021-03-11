@@ -9,7 +9,7 @@ const Users = ({ userlist = [] }) => {
       {userlist.map(user => (
         <div key={user.pubId} className='users__row'>
           <UserIcon icon={user.icon} background={user.color} status size='2rem' />
-          <p>{user.name}</p>
+          <p className='users__nametag'>{user.name}</p>
         </div>
       ))}
     </aside>

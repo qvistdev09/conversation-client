@@ -98,6 +98,11 @@ const App = () => {
     return 'Several people are typing';
   };
 
+  const currentChannel = () => {
+    const current = channelList.find(channel => channel.id === activeConversation);
+    return current ? current.label : 'loading...';
+  };
+
   return (
     <div className='app'>
       <Header>
@@ -112,7 +117,13 @@ const App = () => {
       >
         <AddChannelBtn createChannel={createChannel} />
       </Conversations>
-      <Chat send={send} messages={messages} alertTyping={alertTyping} usersTyping={formatTypingAlert()}>
+      <Chat
+        send={send}
+        messages={messages}
+        alertTyping={alertTyping}
+        usersTyping={formatTypingAlert()}
+        currentChannel={currentChannel()}
+      >
         {messages.map(messageObj => (
           <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id}>
             <UserIcon icon={getIcon(messageObj.by)} size='2.3rem' margin='0' background={getColor(messageObj.by)} />

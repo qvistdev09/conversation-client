@@ -5,7 +5,7 @@ const AddChannelBtn = ({ createChannel }) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    const input = document.querySelector('.conversations__new-channel-input');
+    const input = document.querySelector('.conversations__add-channel-input');
     if (input) {
       input.focus();
     }
@@ -19,19 +19,24 @@ const AddChannelBtn = ({ createChannel }) => {
   };
 
   return (
-    <div className='conversations__add-channel-btn'>
+    <div className='conversations__add-channel'>
       {edit ? (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='conversations__add-channel-form'>
           <input
             type='text'
-            onBlur={() => setEdit(false)}
-            className='conversations__new-channel-input'
+            onBlur={() => {
+              setEdit(false);
+              setInputValue('');
+            }}
+            className='conversations__add-channel-input'
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
           />
         </form>
       ) : (
-        <button onClick={() => setEdit(true)}>Add Channel</button>
+        <button className='conversations__add-channel-btn' onClick={() => setEdit(true)}>
+          + Add Channel
+        </button>
       )}
     </div>
   );

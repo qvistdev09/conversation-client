@@ -11,6 +11,7 @@ const Conversations = ({ channelList, emitActiveConversation, activeConversation
     <nav className='conversations'>
       {channelList.map(channel => (
         <button className={btnClass(channel.id)} key={channel.id} onClick={() => emitActiveConversation(channel.id)}>
+          <span>#</span>
           {channel.label}
         </button>
       ))}

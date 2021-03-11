@@ -1,19 +1,81 @@
+@import 'styles/variables';
+
 .conversations {
   grid-area: conversations;
+  background-color: $primaryblock;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-y: auto;
 }
 
 .conversations__channelBtn {
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 0.9rem;
   display: block;
   width: 100%;
   text-align: left;
   border: none;
   outline: none;
+  background-color: transparent;
+  color: $light;
+  padding: 0.5rem;
+  padding-left: 1rem;
+}
+
+.conversations__channelBtn span {
+  margin-right: 0.3rem;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 .conversations__channelBtn--active {
-  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.164);
 }
 
 .conversations__channelBtn:hover {
-  color: red;
+  color: $hoverprimary;
+}
+
+.conversations__add-channel {
+  display: flex;
+}
+
+.conversations__add-channel-btn {
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 0.9rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: $light;
+  border: 1px solid $light;
+}
+
+.conversations__add-channel-btn:hover {
+  color: $hoverprimary;
+  border-color: $hoverprimary;
+}
+
+.conversations__add-channel-form {
+  flex: 1;
+  margin: 1rem;
+}
+
+.conversations__add-channel-input {
+  font-weight: 300;
+  font-size: 0.9rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: $light;
+  border: 1px solid $light;
 }
