@@ -3,8 +3,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 0.9rem;
-  padding: 2rem 0;
+  width: 1.2rem;
 }
 
 /* Track */
@@ -16,7 +15,7 @@
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: $primarylight;
-  border-radius: 0.25rem;
+  border-right: 0.4rem solid $lightbg;
 }
 
 /* Handle on hover */
