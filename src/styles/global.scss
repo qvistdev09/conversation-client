@@ -3,19 +3,17 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 1.2rem;
+  width: 0.9rem;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent;
-  margin: 0.5rem 0;
+  background: $lightbg_shade;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: $primarylight;
-  border-right: 0.4rem solid $lightbg;
 }
 
 /* Handle on hover */
