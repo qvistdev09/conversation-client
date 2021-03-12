@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/conversation-client/static/css/main.b7f94be4.chunk.css",
-    "main.js": "/conversation-client/static/js/main.7f0789c3.chunk.js",
-    "main.js.map": "/conversation-client/static/js/main.7f0789c3.chunk.js.map",
-    "runtime-main.js": "/conversation-client/static/js/runtime-main.055a8c20.js",
-    "runtime-main.js.map": "/conversation-client/static/js/runtime-main.055a8c20.js.map",
-    "static/js/2.abc0b3c8.chunk.js": "/conversation-client/static/js/2.abc0b3c8.chunk.js",
-    "static/js/2.abc0b3c8.chunk.js.map": "/conversation-client/static/js/2.abc0b3c8.chunk.js.map",
-    "static/js/3.d281c889.chunk.js": "/conversation-client/static/js/3.d281c889.chunk.js",
-    "static/js/3.d281c889.chunk.js.map": "/conversation-client/static/js/3.d281c889.chunk.js.map",
+    "main.css": "/conversation-client/static/css/main.ecfea26a.chunk.css",
+    "main.js": "/conversation-client/static/js/main.86e328a7.chunk.js",
+    "main.js.map": "/conversation-client/static/js/main.86e328a7.chunk.js.map",
+    "runtime-main.js": "/conversation-client/static/js/runtime-main.f0330ece.js",
+    "runtime-main.js.map": "/conversation-client/static/js/runtime-main.f0330ece.js.map",
+    "static/js/2.2d2f0b6f.chunk.js": "/conversation-client/static/js/2.2d2f0b6f.chunk.js",
+    "static/js/2.2d2f0b6f.chunk.js.map": "/conversation-client/static/js/2.2d2f0b6f.chunk.js.map",
+    "static/js/3.4baba944.chunk.js": "/conversation-client/static/js/3.4baba944.chunk.js",
+    "static/js/3.4baba944.chunk.js.map": "/conversation-client/static/js/3.4baba944.chunk.js.map",
     "index.html": "/conversation-client/index.html",
-    "static/css/main.b7f94be4.chunk.css.map": "/conversation-client/static/css/main.b7f94be4.chunk.css.map",
-    "static/js/2.abc0b3c8.chunk.js.LICENSE.txt": "/conversation-client/static/js/2.abc0b3c8.chunk.js.LICENSE.txt",
+    "static/css/main.ecfea26a.chunk.css.map": "/conversation-client/static/css/main.ecfea26a.chunk.css.map",
+    "static/js/2.2d2f0b6f.chunk.js.LICENSE.txt": "/conversation-client/static/js/2.2d2f0b6f.chunk.js.LICENSE.txt",
     "static/media/icon1.svg": "/conversation-client/static/media/icon1.be78a816.svg",
     "static/media/icon10.svg": "/conversation-client/static/media/icon10.7b6cb582.svg",
     "static/media/icon11.svg": "/conversation-client/static/media/icon11.c4e447fa.svg",
@@ -64,9 +64,9 @@
     "static/media/icon9.svg": "/conversation-client/static/media/icon9.f46af93f.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.055a8c20.js",
-    "static/js/2.abc0b3c8.chunk.js",
-    "static/css/main.b7f94be4.chunk.css",
-    "static/js/main.7f0789c3.chunk.js"
+    "static/js/runtime-main.f0330ece.js",
+    "static/js/2.2d2f0b6f.chunk.js",
+    "static/css/main.ecfea26a.chunk.css",
+    "static/js/main.86e328a7.chunk.js"
   ]
 }
