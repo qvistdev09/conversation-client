@@ -27,10 +27,17 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
         {currentChannel}
       </h2>
       <div className='chat__messages'>{children}</div>
-      <div className="chat__form-container">
-        <p>{usersTyping}</p>
+      <div className='chat__form-container'>
+        {usersTyping !== '' && (
+          <p className='chat__typingalert'>
+            {usersTyping}
+            <span className='chat__dot1'>.</span>
+            <span className='chat__dot2'>.</span>
+            <span className='chat__dot3'>.</span>
+          </p>
+        )}
         <form className='chat__form' onSubmit={onSubmit}>
-          <input type='text' className='chat__input' value={message} onChange={handleOnChange} required/>
+          <input type='text' className='chat__input' value={message} onChange={handleOnChange} required />
           <button className='chat__button'>Send</button>
         </form>
       </div>
