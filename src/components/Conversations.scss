@@ -80,3 +80,17 @@
   color: $light;
   border: 1px solid $light;
 }
+
+.conversations__new {
+  background-color: $hoverprimary;
+  font-weight: 900;
+  font-size: 0.8rem !important;
+  color: $light !important;
+  border-radius: 4px;
+  padding: 2px;
+  margin-left: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+}

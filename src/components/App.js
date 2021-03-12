@@ -23,7 +23,18 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState();
   const [usersTyping, setUsersTyping] = useState([]);
+  const [newMessages, setNewMessages] = useState([]);
   const client = useRef();
+
+  const handleNewMessage = channelId => {
+    setNewMessages(previous => {
+      const matched = previous.find(entry => entry.id === channelId);
+      if (matched) {
+        return previous.map(entry => (entry.id === channelId ? { ...entry, new: entry.new + 1 } : entry));
+      }
+      return [...previous, { id: channelId, new: 1 }];
+    });
+  };
 
   useEffect(() => {
     client.current = io(getServer());
@@ -33,6 +44,7 @@ const App = () => {
     socket.on('channel-message', messagesArray => setMessages(messagesArray));
     socket.on('user-id', receivedId => setUserId(receivedId));
     socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
+    socket.on('new-channel-message', handleNewMessage);
 
     return () => {
       socket.close();
@@ -45,8 +57,20 @@ const App = () => {
     }
   };
 
+  const clearNew = id => {
+    setNewMessages(previous => {
+      const match = previous.find(entry => entry.id === id);
+      if (match) {
+        return previous.map(entry => (entry.id === id ? { ...entry, new: 0 } : entry));
+      }
+      return [...previous, { id, new: 0 }];
+    });
+  };
+
   const emitActiveConversation = id => {
+    clearNew(activeConversation);
     setActiveConversation(id);
+    clearNew(id);
     client.current.emit('set-active', id);
   };
 
@@ -115,6 +139,7 @@ const App = () => {
         </Header>
         <Conversations
           channelList={channelList}
+          newMessages={newMessages}
           emitActiveConversation={emitActiveConversation}
           activeConversation={activeConversation}
         >
