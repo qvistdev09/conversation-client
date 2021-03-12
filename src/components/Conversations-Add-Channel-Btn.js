@@ -31,6 +31,7 @@ const AddChannelBtn = ({ createChannel }) => {
             className='conversations__add-channel-input'
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
+            required
           />
         </form>
       ) : (

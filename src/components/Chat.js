@@ -27,10 +27,10 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
         {currentChannel}
       </h2>
       <div className='chat__messages'>{children}</div>
-      <div>
+      <div className="chat__form-container">
         <p>{usersTyping}</p>
         <form className='chat__form' onSubmit={onSubmit}>
-          <input type='text' className='chat__input' value={message} onChange={handleOnChange} />
+          <input type='text' className='chat__input' value={message} onChange={handleOnChange} required/>
           <button className='chat__button'>Send</button>
         </form>
       </div>
