@@ -1,0 +1,29 @@
+@import 'styles/variables';
+
+.footer {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer__text {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $dark;
+}
+
+.footer__icon {
+  font-size: 0.3rem;
+  margin: 0 0.5rem;
+  color: $dark;
+}
+
+.footer__link {
+  color: $dark;
+}
+
+.footer__link:hover {
+  color: $hoverprimary;
+}

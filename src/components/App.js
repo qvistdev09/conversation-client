@@ -14,6 +14,7 @@ import AddChannelBtn from 'components/Conversations-Add-Channel-Btn';
 import Chat from 'components/Chat';
 import ChatContent from 'components/Chat-Content';
 import Users from 'components/Users';
+import Footer from 'components/Footer';
 
 const App = () => {
   const [userlist, setUserlist] = useState([]);
@@ -104,34 +105,38 @@ const App = () => {
   };
 
   return (
-    <div className='app'>
-      <Header>
-        <User userName={getName(userId)} setUserName={setUserName}>
-          <UserIcon icon={getIcon(userId)} background={getColor(userId)} status />
-        </User>
-      </Header>
-      <Conversations
-        channelList={channelList}
-        emitActiveConversation={emitActiveConversation}
-        activeConversation={activeConversation}
-      >
-        <AddChannelBtn createChannel={createChannel} />
-      </Conversations>
-      <Chat
-        send={send}
-        messages={messages}
-        alertTyping={alertTyping}
-        usersTyping={formatTypingAlert()}
-        currentChannel={currentChannel()}
-      >
-        {messages.map(messageObj => (
-          <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id}>
-            <UserIcon icon={getIcon(messageObj.by)} size='2.3rem' margin='0' background={getColor(messageObj.by)} />
-          </ChatContent>
-        ))}
-      </Chat>
-      <Users userlist={userlist.filter(user => user.online)} />
-    </div>
+    <>
+      <div className='filler-div'></div>
+      <div className='app'>
+        <Header>
+          <User userName={getName(userId)} setUserName={setUserName}>
+            <UserIcon icon={getIcon(userId)} background={getColor(userId)} status />
+          </User>
+        </Header>
+        <Conversations
+          channelList={channelList}
+          emitActiveConversation={emitActiveConversation}
+          activeConversation={activeConversation}
+        >
+          <AddChannelBtn createChannel={createChannel} />
+        </Conversations>
+        <Chat
+          send={send}
+          messages={messages}
+          alertTyping={alertTyping}
+          usersTyping={formatTypingAlert()}
+          currentChannel={currentChannel()}
+        >
+          {messages.map(messageObj => (
+            <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id}>
+              <UserIcon icon={getIcon(messageObj.by)} size='2.3rem' margin='0' background={getColor(messageObj.by)} />
+            </ChatContent>
+          ))}
+        </Chat>
+        <Users userlist={userlist.filter(user => user.online)} />
+      </div>
+      <Footer />
+    </>
   );
 };
 
