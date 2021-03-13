@@ -16,6 +16,8 @@ import ChatContent from 'components/Chat-Content';
 import Users from 'components/Users';
 import Footer from 'components/Footer';
 
+import { getFromCache, saveInCache } from 'data-handling/cache';
+
 const App = () => {
   const [userlist, setUserlist] = useState([]);
   const [channelList, setChannelList] = useState([]);
@@ -36,15 +38,43 @@ const App = () => {
     });
   };
 
+  const retrieveMessage = (channelId, messageId) =>
+    new Promise(resolve => {
+      client.current.emit('need-message', channelId, messageId, messageObj => {
+        resolve(messageObj);
+      });
+    });
+
+  const constructMessages = async (sequence, channelId, retrieveMessage) => {
+    const sequenceArray = sequence
+      .split('-')
+      .filter(str => str !== '')
+      .map(nr => parseInt(nr, 10));
+    const stagedMessages = [];
+    for (let identifier of sequenceArray) {
+      const cachedMessage = getFromCache(channelId, identifier);
+      if (cachedMessage) {
+        console.log('picked message from cache');
+        stagedMessages.push(cachedMessage);
+      } else {
+        console.log('asked server for message');
+        const retrieved = await retrieveMessage(channelId, identifier);
+        saveInCache(channelId, retrieved);
+        stagedMessages.push(retrieved);
+      }
+    }
+    setMessages(stagedMessages);
+  };
+
   useEffect(() => {
     client.current = io(getServer());
     const socket = client.current;
     socket.on('user-list', usersArray => setUserlist(usersArray));
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
-    socket.on('channel-message', messagesArray => setMessages(messagesArray));
     socket.on('user-id', receivedId => setUserId(receivedId));
     socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('new-channel-message', handleNewMessage);
+    socket.on('new-sequence', (sequence, channelId) => constructMessages(sequence, channelId, retrieveMessage));
 
     return () => {
       socket.close();
@@ -52,9 +82,7 @@ const App = () => {
   }, []);
 
   const send = message => {
-    if (userId !== undefined) {
-      client.current.emit('message', { text: message, id: activeConversation, by: userId });
-    }
+    client.current.emit('channel-message', message);
   };
 
   const clearNew = id => {
@@ -71,7 +99,7 @@ const App = () => {
     clearNew(activeConversation);
     setActiveConversation(id);
     clearNew(id);
-    client.current.emit('set-active', id);
+    client.current.emit('set-channel', id);
   };
 
   const createChannel = label => {
@@ -83,17 +111,17 @@ const App = () => {
   };
 
   const getName = id => {
-    const match = userlist.find(user => user.pubId === id);
+    const match = userlist.find(user => user.id === id);
     return match ? match.name : 'Missing';
   };
 
   const getColor = id => {
-    const match = userlist.find(user => user.pubId === id);
+    const match = userlist.find(user => user.id === id);
     return match ? match.color : '#89f0a4';
   };
 
   const getIcon = id => {
-    const match = userlist.find(user => user.pubId === id);
+    const match = userlist.find(user => user.id === id);
     if (match && match.icon) {
       return match.icon;
     }
@@ -153,8 +181,13 @@ const App = () => {
           currentChannel={currentChannel()}
         >
           {messages.map(messageObj => (
-            <ChatContent user={getName(messageObj.by)} messageObj={messageObj} key={messageObj.id}>
-              <UserIcon icon={getIcon(messageObj.by)} size='2.3rem' margin='0' background={getColor(messageObj.by)} />
+            <ChatContent user={getName(messageObj.userId)} messageObj={messageObj} key={messageObj.messageId}>
+              <UserIcon
+                icon={getIcon(messageObj.userId)}
+                size='2.3rem'
+                margin='0'
+                background={getColor(messageObj.userId)}
+              />
             </ChatContent>
           ))}
         </Chat>

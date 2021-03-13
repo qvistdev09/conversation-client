@@ -17,9 +17,9 @@ const ChatContent = ({ user, messageObj, children }) => {
         <div className='chat__pointer'></div>
         <div className='chat__content-header'>
           <p className='chat__nametag'>{user}</p>
-          <p className='chat__timetag'>{formatTimeStamp(messageObj.time)}</p>
+          <p className='chat__timetag'>{formatTimeStamp(messageObj.date)}</p>
         </div>
-        <p className='chat__texttag'>{messageObj.text}</p>
+        <p className='chat__texttag'>{messageObj.textContent}</p>
       </div>
     </div>
   );

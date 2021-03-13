@@ -7,7 +7,7 @@ const Users = ({ userlist = [] }) => {
   return (
     <aside className='users'>
       {userlist.map(user => (
-        <div key={user.pubId} className='users__row'>
+        <div key={user.id} className='users__row'>
           <UserIcon icon={user.icon} background={user.color} status size='2rem' />
           <p className='users__nametag'>{user.name}</p>
         </div>
