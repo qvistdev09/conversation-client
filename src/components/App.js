@@ -16,7 +16,7 @@ import ChatContent from 'components/Chat-Content';
 import Users from 'components/Users';
 import Footer from 'components/Footer';
 
-import { getFromCache, saveInCache } from 'data-handling/cache';
+import { getFromCache, saveInCache, clearCache } from 'data-handling/cache';
 
 const App = () => {
   const [userlist, setUserlist] = useState([]);
@@ -69,6 +69,7 @@ const App = () => {
   useEffect(() => {
     client.current = io(getServer());
     const socket = client.current;
+    socket.on('clear-cache', () => clearCache());
     socket.on('user-list', usersArray => setUserlist(usersArray));
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
     socket.on('user-id', receivedId => setUserId(receivedId));

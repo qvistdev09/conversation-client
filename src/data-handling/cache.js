@@ -1,4 +1,4 @@
-const cachedMessages = {};
+let cachedMessages = {};
 
 const getFromCache = (channelId, messageId) => {
   if (cachedMessages[channelId] && cachedMessages[channelId][messageId]) {
@@ -15,4 +15,8 @@ const saveInCache = (channelId, messageObj) => {
   }
 };
 
-export { getFromCache, saveInCache };
+const clearCache = () => {
+  cachedMessages = {};
+};
+
+export { getFromCache, saveInCache, clearCache };
