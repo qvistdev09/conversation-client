@@ -26,6 +26,7 @@ const App = () => {
   const [userId, setUserId] = useState();
   const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
+  const [spamBlock, setSpamBlock] = useState(false);
   const client = useRef();
 
   const handleNewMessage = channelId => {
@@ -76,6 +77,7 @@ const App = () => {
     socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('new-channel-message', handleNewMessage);
     socket.on('new-sequence', (sequence, channelId) => constructMessages(sequence, channelId, retrieveMessage));
+    socket.on('spam-block', status => setSpamBlock(status));
 
     return () => {
       socket.close();
@@ -180,6 +182,7 @@ const App = () => {
           alertTyping={alertTyping}
           usersTyping={formatTypingAlert()}
           currentChannel={currentChannel()}
+          spamBlock={spamBlock}
         >
           {messages.map(messageObj => (
             <ChatContent user={getName(messageObj.userId)} messageObj={messageObj} key={messageObj.messageId}>

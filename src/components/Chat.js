@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel }) => {
+const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, spamBlock }) => {
   const [message, setMessage] = useState('');
 
   const onSubmit = e => {
@@ -37,7 +37,15 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
           </p>
         )}
         <form className='chat__form' onSubmit={onSubmit}>
-          <input type='text' className='chat__input' value={message} onChange={handleOnChange} required />
+          <input
+            type='text'
+            className='chat__input'
+            value={message}
+            onChange={handleOnChange}
+            required
+            disabled={spamBlock}
+            placeholder={spamBlock ? 'Please hold back a bit on your messages!' : 'Type here!'}
+          />
           <button className='chat__button'>Send</button>
         </form>
       </div>
