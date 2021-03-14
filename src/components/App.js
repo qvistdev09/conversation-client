@@ -39,31 +39,41 @@ const App = () => {
     });
   };
 
-  const retrieveMessage = (channelId, messageId) =>
+  const retrieveMessages = (channelId, messageIdArray) =>
     new Promise(resolve => {
-      client.current.emit('need-message', channelId, messageId, messageObj => {
-        resolve(messageObj);
+      client.current.emit('need-messages', channelId, messageIdArray, responseArray => {
+        resolve(responseArray);
       });
     });
 
-  const constructMessages = async (sequence, channelId, retrieveMessage) => {
-    const sequenceArray = sequence
+  const saveMessagesInCache = (channelId, messageObjArray) => {
+    messageObjArray.forEach(obj => saveInCache(channelId, obj));
+  };
+
+  const cacheControl = (parsedSequence, channelId) => {
+    const missingInCache = [];
+    parsedSequence.forEach(identifier => {
+      const cachedMessage = getFromCache(channelId, identifier);
+      if (!cachedMessage) {
+        missingInCache.push(identifier);
+      }
+    });
+    return missingInCache;
+  };
+
+  const rebuildMessages = async (sequence, channelId, cacheControl, retrieveMessages, saveMessagesInCache) => {
+    const parsedSequence = sequence
       .split('-')
       .filter(str => str !== '')
       .map(nr => parseInt(nr, 10));
-    const stagedMessages = [];
-    for (let identifier of sequenceArray) {
-      const cachedMessage = getFromCache(channelId, identifier);
-      if (cachedMessage) {
-        console.log('picked message from cache');
-        stagedMessages.push(cachedMessage);
-      } else {
-        console.log('asked server for message');
-        const retrieved = await retrieveMessage(channelId, identifier);
-        saveInCache(channelId, retrieved);
-        stagedMessages.push(retrieved);
-      }
+    const missingInCache = cacheControl(parsedSequence, channelId);
+    if (missingInCache.length > 0) {
+      console.log('missing in cache', missingInCache);
+      const newMessages = await retrieveMessages(channelId, missingInCache);
+      saveMessagesInCache(channelId, newMessages);
     }
+    const stagedMessages = [];
+    parsedSequence.forEach(identifier => stagedMessages.push(getFromCache(channelId, identifier)));
     setMessages(stagedMessages);
   };
 
@@ -76,7 +86,9 @@ const App = () => {
     socket.on('user-id', receivedId => setUserId(receivedId));
     socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('new-channel-message', handleNewMessage);
-    socket.on('new-sequence', (sequence, channelId) => constructMessages(sequence, channelId, retrieveMessage));
+    socket.on('new-sequence', (sequence, channelId) =>
+      rebuildMessages(sequence, channelId, cacheControl, retrieveMessages, saveMessagesInCache)
+    );
     socket.on('spam-block', status => setSpamBlock(status));
 
     return () => {
