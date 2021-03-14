@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/conversation-client/static/css/main.9185eaf7.chunk.css",
-    "main.js": "/conversation-client/static/js/main.7861430e.chunk.js",
-    "main.js.map": "/conversation-client/static/js/main.7861430e.chunk.js.map",
+    "main.css": "/conversation-client/static/css/main.522bc3d7.chunk.css",
+    "main.js": "/conversation-client/static/js/main.ae6aa1f4.chunk.js",
+    "main.js.map": "/conversation-client/static/js/main.ae6aa1f4.chunk.js.map",
     "runtime-main.js": "/conversation-client/static/js/runtime-main.be6bed61.js",
     "runtime-main.js.map": "/conversation-client/static/js/runtime-main.be6bed61.js.map",
     "static/js/2.f9226bf6.chunk.js": "/conversation-client/static/js/2.f9226bf6.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.2a7dc0c4.chunk.js": "/conversation-client/static/js/3.2a7dc0c4.chunk.js",
     "static/js/3.2a7dc0c4.chunk.js.map": "/conversation-client/static/js/3.2a7dc0c4.chunk.js.map",
     "index.html": "/conversation-client/index.html",
-    "static/css/main.9185eaf7.chunk.css.map": "/conversation-client/static/css/main.9185eaf7.chunk.css.map",
+    "static/css/main.522bc3d7.chunk.css.map": "/conversation-client/static/css/main.522bc3d7.chunk.css.map",
     "static/js/2.f9226bf6.chunk.js.LICENSE.txt": "/conversation-client/static/js/2.f9226bf6.chunk.js.LICENSE.txt",
     "static/media/icon1.svg": "/conversation-client/static/media/icon1.be78a816.svg",
     "static/media/icon10.svg": "/conversation-client/static/media/icon10.7b6cb582.svg",
@@ -66,7 +66,7 @@
   "entrypoints": [
     "static/js/runtime-main.be6bed61.js",
     "static/js/2.f9226bf6.chunk.js",
-    "static/css/main.9185eaf7.chunk.css",
-    "static/js/main.7861430e.chunk.js"
+    "static/css/main.522bc3d7.chunk.css",
+    "static/js/main.ae6aa1f4.chunk.js"
   ]
 }
