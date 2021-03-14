@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, spamBlock }) => {
+const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, spamBlock, loadingText }) => {
   const [message, setMessage] = useState('');
 
   const onSubmit = e => {
@@ -23,10 +23,19 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
   return (
     <main className='chat'>
       <h2 className='chat__channeltag'>
-        <span>#</span>
+        <span style={{ opacity: currentChannel !== '' ? '1' : '0' }}>#</span>
         {currentChannel}
       </h2>
-      <div className='chat__messages'>{children}</div>
+      <div className='chat__messages'>
+        {loadingText !== '' ? (
+          <div className='chat__loadingdiv'>
+            <i className='fas fa-sync-alt chat__loadingicon'></i>
+            <p className='chat__loadingtext'>{loadingText}</p>
+          </div>
+        ) : (
+          children
+        )}
+      </div>
       <div className='chat__form-container'>
         {usersTyping !== '' && (
           <p className='chat__typingalert'>

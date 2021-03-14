@@ -27,6 +27,7 @@ const App = () => {
   const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
   const [spamBlock, setSpamBlock] = useState(false);
+  const [loadingText, setLoadingText] = useState('Waking up server, please wait...');
   const client = useRef();
 
   const handleNewMessage = channelId => {
@@ -61,7 +62,17 @@ const App = () => {
     return missingInCache;
   };
 
-  const rebuildMessages = async (sequence, channelId, cacheControl, retrieveMessages, saveMessagesInCache) => {
+  const rebuildMessages = async (
+    sequence,
+    channelId,
+    cacheControl,
+    retrieveMessages,
+    saveMessagesInCache,
+    activeConversation
+  ) => {
+    if (channelId !== activeConversation) {
+      setLoadingText('Loading...');
+    }
     const parsedSequence = sequence
       .split('-')
       .filter(str => str !== '')
@@ -75,6 +86,7 @@ const App = () => {
     const stagedMessages = [];
     parsedSequence.forEach(identifier => stagedMessages.push(getFromCache(channelId, identifier)));
     setMessages(stagedMessages);
+    setLoadingText('');
   };
 
   useEffect(() => {
@@ -86,15 +98,18 @@ const App = () => {
     socket.on('user-id', receivedId => setUserId(receivedId));
     socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('new-channel-message', handleNewMessage);
-    socket.on('new-sequence', (sequence, channelId) =>
-      rebuildMessages(sequence, channelId, cacheControl, retrieveMessages, saveMessagesInCache)
-    );
     socket.on('spam-block', status => setSpamBlock(status));
 
     return () => {
       socket.close();
     };
   }, []);
+
+  useEffect(() => {
+    client.current.on('new-sequence', (sequence, channelId) =>
+      rebuildMessages(sequence, channelId, cacheControl, retrieveMessages, saveMessagesInCache, activeConversation)
+    );
+  }, [activeConversation]);
 
   const send = message => {
     client.current.emit('channel-message', message);
@@ -127,7 +142,7 @@ const App = () => {
 
   const getName = id => {
     const match = userlist.find(user => user.id === id);
-    return match ? match.name : 'Missing';
+    return match ? match.name : '. . .';
   };
 
   const getColor = id => {
@@ -168,7 +183,7 @@ const App = () => {
 
   const currentChannel = () => {
     const current = channelList.find(channel => channel.id === activeConversation);
-    return current ? current.label : 'loading...';
+    return current ? current.label : '';
   };
 
   return (
@@ -195,6 +210,7 @@ const App = () => {
           usersTyping={formatTypingAlert()}
           currentChannel={currentChannel()}
           spamBlock={spamBlock}
+          loadingText={loadingText}
         >
           {messages.map(messageObj => (
             <ChatContent user={getName(messageObj.userId)} messageObj={messageObj} key={messageObj.messageId}>
