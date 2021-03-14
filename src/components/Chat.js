@@ -13,7 +13,7 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
   useEffect(() => {
     const container = document.querySelector('.chat__messages');
     container.scrollTop = container.scrollHeight;
-  }, [messages]);
+  });
 
   const handleOnChange = e => {
     alertTyping();
@@ -27,14 +27,7 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
         {currentChannel}
       </h2>
       <div className='chat__messages'>
-        {loadingText !== '' ? (
-          <div className='chat__loadingdiv'>
-            <i className='fas fa-sync-alt chat__loadingicon'></i>
-            <p className='chat__loadingtext'>{loadingText}</p>
-          </div>
-        ) : (
-          children
-        )}
+        {children}
       </div>
       <div className='chat__form-container'>
         {usersTyping !== '' && (
