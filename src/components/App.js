@@ -79,7 +79,6 @@ const App = () => {
       .map(nr => parseInt(nr, 10));
     const missingInCache = cacheControl(parsedSequence, channelId);
     if (missingInCache.length > 0) {
-      console.log('missing in cache', missingInCache);
       const newMessages = await retrieveMessages(channelId, missingInCache);
       saveMessagesInCache(channelId, newMessages);
     }
@@ -96,7 +95,9 @@ const App = () => {
     socket.on('user-list', usersArray => setUserlist(usersArray));
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
     socket.on('user-id', receivedId => setUserId(receivedId));
-    socket.on('users-typing', usersTypingArray => setUsersTyping(usersTypingArray));
+    socket.on('replace-people-typing-aray', usersTypingArray => setUsersTyping(usersTypingArray));
+    socket.on('user-started-typing', userId => setUsersTyping(prev => [...prev, userId]));
+    socket.on('user-stopped-typing', userId => setUsersTyping(prev => prev.filter(user => user !== userId)));
     socket.on('new-channel-message', handleNewMessage);
     socket.on('spam-block', status => setSpamBlock(status));
 
