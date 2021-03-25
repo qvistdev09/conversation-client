@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setList, setClientId } from 'reducers/slices/users';
 import { io } from 'socket.io-client';
 import getServer from 'config/server-url';
 
@@ -7,23 +9,24 @@ import 'components/App.scss';
 // components
 
 import Header from 'components/Header';
-import User from 'components/Header-User';
+import UserDetails from 'components/UserDetails';
 import UserIcon from 'components/UserIcon';
 import Conversations from 'components/Conversations';
-import AddChannelBtn from 'components/Conversations-Add-Channel-Btn';
+import AddChannelBtn from 'components/AddChannelBtn';
 import Chat from 'components/Chat';
-import ChatContent from 'components/Chat-Content';
+import ChatContent from 'components/ChatContent';
 import Users from 'components/Users';
 import Footer from 'components/Footer';
 
 import { getFromCache, saveInCache, clearCache } from 'data-handling/cache';
 
 const App = () => {
-  const [userlist, setUserlist] = useState([]);
+  const dispatch = useDispatch();
+  const userId = useSelector(({ users }) => users.clientId);
+  const usersList = useSelector(({ users }) => users.list);
   const [channelList, setChannelList] = useState([]);
   const [activeConversation, setActiveConversation] = useState(0);
   const [messages, setMessages] = useState([]);
-  const [userId, setUserId] = useState();
   const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
   const [spamBlock, setSpamBlock] = useState(false);
@@ -92,9 +95,9 @@ const App = () => {
     client.current = io(getServer());
     const socket = client.current;
     socket.on('clear-cache', () => clearCache());
-    socket.on('user-list', usersArray => setUserlist(usersArray));
+    socket.on('user-list', usersArray => dispatch(setList(usersArray)));
     socket.on('channel-list', channelsArray => setChannelList(channelsArray));
-    socket.on('user-id', receivedId => setUserId(receivedId));
+    socket.on('user-id', receivedId => dispatch(setClientId(receivedId)));
     socket.on('replace-people-typing-aray', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('user-started-typing', userId => setUsersTyping(prev => [...prev, userId]));
     socket.on('user-stopped-typing', userId => setUsersTyping(prev => prev.filter(user => user !== userId)));
@@ -104,7 +107,7 @@ const App = () => {
     return () => {
       socket.close();
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     client.current.on('new-sequence', (sequence, channelId) =>
@@ -142,17 +145,17 @@ const App = () => {
   };
 
   const getName = id => {
-    const match = userlist.find(user => user.id === id);
+    const match = usersList.find(user => user.id === id);
     return match ? match.name : '. . .';
   };
 
   const getColor = id => {
-    const match = userlist.find(user => user.id === id);
+    const match = usersList.find(user => user.id === id);
     return match ? match.color : '#89f0a4';
   };
 
   const getIcon = id => {
-    const match = userlist.find(user => user.id === id);
+    const match = usersList.find(user => user.id === id);
     if (match && match.icon) {
       return match.icon;
     }
@@ -163,7 +166,7 @@ const App = () => {
     client.current.emit('is-typing');
   };
 
-  const formatTypingAlert = () => {
+  const formatTypingAlert = userId => {
     const filtered = usersTyping.filter(id => id !== userId);
     if (filtered.length === 1) {
       return `${getName(filtered[0])} is typing`;
@@ -192,9 +195,7 @@ const App = () => {
       <div className='filler-div'></div>
       <div className='app'>
         <Header>
-          <User userName={getName(userId)} setUserName={setUserName}>
-            <UserIcon icon={getIcon(userId)} background={getColor(userId)} status />
-          </User>
+          <UserDetails setUserName={setUserName} />
         </Header>
         <Conversations
           channelList={channelList}
@@ -208,7 +209,7 @@ const App = () => {
           send={send}
           messages={messages}
           alertTyping={alertTyping}
-          usersTyping={formatTypingAlert()}
+          usersTyping={formatTypingAlert(userId)}
           currentChannel={currentChannel()}
           spamBlock={spamBlock}
           loadingText={loadingText}
@@ -224,7 +225,7 @@ const App = () => {
             </ChatContent>
           ))}
         </Chat>
-        <Users userlist={userlist.filter(user => user.online)} />
+        <Users userlist={usersList.filter(user => user.online)} />
       </div>
       <Footer />
     </>

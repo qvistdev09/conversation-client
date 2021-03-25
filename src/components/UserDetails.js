@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getClientName, getClientColor, getClientIcon } from 'reducers/slices/users';
+import UserIcon from 'components/UserIcon';
 
-const User = ({ userName, setUserName, children }) => {
+const UserDetails = ({ setUserName }) => {
   const [usernameEdit, setUsernameEdit] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const clientName = useSelector(getClientName);
+  const clientColor = useSelector(getClientColor);
+  const clientIcon = useSelector(getClientIcon);
 
   useEffect(() => {
     const input = document.querySelector('.header__username-input');
@@ -19,7 +25,7 @@ const User = ({ userName, setUserName, children }) => {
   };
 
   const startEdit = () => {
-    setInputValue(userName);
+    setInputValue(clientName);
     setUsernameEdit(true);
   };
 
@@ -39,12 +45,12 @@ const User = ({ userName, setUserName, children }) => {
         </form>
       ) : (
         <button className='header__name-btn' onClick={startEdit}>
-          {userName}
+          {clientName}
         </button>
       )}
-      {children}
+      <UserIcon icon={clientIcon} background={clientColor} status />
     </div>
   );
 };
 
-export default User;
+export default UserDetails;

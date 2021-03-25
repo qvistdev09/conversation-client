@@ -1,14 +1,21 @@
+import 'styles/reset.scss';
+import 'styles/global.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from 'components/App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from 'reducers/rootReducer';
+const store = configureStore({ reducer: rootReducer });
 
-import 'styles/reset.scss';
-import 'styles/global.scss';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
