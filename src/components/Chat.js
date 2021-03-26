@@ -3,7 +3,11 @@ import { useSelector } from 'react-redux';
 
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, loadingText }) => {
+const Chat = ({ send, children, alertTyping, usersTyping }) => {
+  const currentChannel = useSelector(({ channels }) => {
+    const matchedChannel = channels.list.find(channel => channel.id === channels.active);
+    return matchedChannel ? matchedChannel.label : '';
+  });
   const spamBlock = useSelector(({ users }) => users.clientBlocked);
   const [message, setMessage] = useState('');
 

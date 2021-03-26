@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import 'components/Conversations.scss';
 
-const Conversations = ({ channelList, newMessages, emitActiveConversation, activeConversation, children }) => {
+const Conversations = ({ newMessages, emitActiveConversation, children }) => {
+  const channelsList = useSelector(({ channels }) => channels.list);
+  const activeConversation = useSelector(({ channels }) => channels.active);
   const btnClass = id => {
     const status = id === activeConversation ? 'active' : 'inactive';
     return `conversations__channelBtn conversations__channelBtn--${status}`;
@@ -19,7 +22,7 @@ const Conversations = ({ channelList, newMessages, emitActiveConversation, activ
 
   return (
     <nav className='conversations'>
-      {channelList.map(channel => (
+      {channelsList.map(channel => (
         <button className={btnClass(channel.id)} key={channel.id} onClick={() => emitActiveConversation(channel.id)}>
           <span>#</span>
           {channel.label}

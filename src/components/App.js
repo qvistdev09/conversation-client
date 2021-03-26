@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setList, setClientId, setSpamBlock } from 'reducers/slices/users';
+import { setChannelsList, setActiveChannel } from 'reducers/slices/channels';
 import { io } from 'socket.io-client';
 import getServer from 'config/server-url';
 
@@ -24,8 +25,7 @@ const App = () => {
   const dispatch = useDispatch();
   const userId = useSelector(({ users }) => users.clientId);
   const usersList = useSelector(({ users }) => users.list);
-  const [channelList, setChannelList] = useState([]);
-  const [activeConversation, setActiveConversation] = useState(0);
+  const activeConversation = useSelector(({ channels }) => channels.active);
   const [messages, setMessages] = useState([]);
   const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
@@ -95,7 +95,7 @@ const App = () => {
     const socket = client.current;
     socket.on('clear-cache', () => clearCache());
     socket.on('user-list', usersArray => dispatch(setList(usersArray)));
-    socket.on('channel-list', channelsArray => setChannelList(channelsArray));
+    socket.on('channel-list', channelsArray => dispatch(setChannelsList(channelsArray)));
     socket.on('user-id', receivedId => dispatch(setClientId(receivedId)));
     socket.on('replace-people-typing-aray', usersTypingArray => setUsersTyping(usersTypingArray));
     socket.on('user-started-typing', userId => setUsersTyping(prev => [...prev, userId]));
@@ -130,7 +130,7 @@ const App = () => {
 
   const emitActiveConversation = id => {
     clearNew(activeConversation);
-    setActiveConversation(id);
+    dispatch(setActiveChannel(id));
     clearNew(id);
     client.current.emit('set-channel', id);
   };
@@ -184,11 +184,6 @@ const App = () => {
     return 'Several people are typing';
   };
 
-  const currentChannel = () => {
-    const current = channelList.find(channel => channel.id === activeConversation);
-    return current ? current.label : '';
-  };
-
   return (
     <>
       <div className='filler-div'></div>
@@ -196,12 +191,7 @@ const App = () => {
         <Header>
           <UserDetails setUserName={setUserName} />
         </Header>
-        <Conversations
-          channelList={channelList}
-          newMessages={newMessages}
-          emitActiveConversation={emitActiveConversation}
-          activeConversation={activeConversation}
-        >
+        <Conversations newMessages={newMessages} emitActiveConversation={emitActiveConversation}>
           <AddChannelBtn createChannel={createChannel} />
         </Conversations>
         <Chat
@@ -209,7 +199,6 @@ const App = () => {
           messages={messages}
           alertTyping={alertTyping}
           usersTyping={formatTypingAlert(userId)}
-          currentChannel={currentChannel()}
           loadingText={loadingText}
         >
           {messages.map(messageObj => (
