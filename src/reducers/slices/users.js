@@ -4,6 +4,7 @@ const users = createSlice({
   name: 'users',
   initialState: {
     clientId: null,
+    clientBlocked: false,
     list: [],
   },
   reducers: {
@@ -13,6 +14,9 @@ const users = createSlice({
     setClientId(state, action) {
       state.clientId = action.payload;
     },
+    setSpamBlock(state, action) {
+      state.clientBlocked = action.payload;
+    }
   },
 });
 
@@ -39,6 +43,6 @@ const getClientColor = ({ users }) => {
 
 export { getClientName, getClientIcon, getClientColor };
 
-export const { setList, setClientId } = users.actions;
+export const { setList, setClientId, setSpamBlock } = users.actions;
 
 export default users.reducer;

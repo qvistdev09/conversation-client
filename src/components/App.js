@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setList, setClientId } from 'reducers/slices/users';
+import { setList, setClientId, setSpamBlock } from 'reducers/slices/users';
 import { io } from 'socket.io-client';
 import getServer from 'config/server-url';
 
@@ -29,7 +29,6 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
-  const [spamBlock, setSpamBlock] = useState(false);
   const [loadingText, setLoadingText] = useState('Waking up server, please wait...');
   const client = useRef();
 
@@ -102,7 +101,7 @@ const App = () => {
     socket.on('user-started-typing', userId => setUsersTyping(prev => [...prev, userId]));
     socket.on('user-stopped-typing', userId => setUsersTyping(prev => prev.filter(user => user !== userId)));
     socket.on('new-channel-message', handleNewMessage);
-    socket.on('spam-block', status => setSpamBlock(status));
+    socket.on('spam-block', status => dispatch(setSpamBlock(status)));
 
     return () => {
       socket.close();
@@ -211,7 +210,6 @@ const App = () => {
           alertTyping={alertTyping}
           usersTyping={formatTypingAlert(userId)}
           currentChannel={currentChannel()}
-          spamBlock={spamBlock}
           loadingText={loadingText}
         >
           {messages.map(messageObj => (

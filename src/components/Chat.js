@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, spamBlock, loadingText }) => {
+const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChannel, loadingText }) => {
+  const spamBlock = useSelector(({ users }) => users.clientBlocked);
   const [message, setMessage] = useState('');
 
   const onSubmit = e => {
@@ -26,9 +29,7 @@ const Chat = ({ send, children, messages, alertTyping, usersTyping, currentChann
         <span style={{ opacity: currentChannel !== '' ? '1' : '0' }}>#</span>
         {currentChannel}
       </h2>
-      <div className='chat__messages'>
-        {children}
-      </div>
+      <div className='chat__messages'>{children}</div>
       <div className='chat__form-container'>
         {usersTyping !== '' && (
           <p className='chat__typingalert'>
