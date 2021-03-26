@@ -1,7 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setList, setClientId, setSpamBlock } from 'reducers/slices/users';
-import { setChannelsList, setActiveChannel } from 'reducers/slices/channels';
+import {
+  setChannelsList,
+  setActiveChannel,
+  setUsersTyping,
+  addTypingUser,
+  removeUserTyping,
+} from 'reducers/slices/channels';
 import { io } from 'socket.io-client';
 import getServer from 'config/server-url';
 
@@ -23,11 +29,9 @@ import { getFromCache, saveInCache, clearCache } from 'data-handling/cache';
 
 const App = () => {
   const dispatch = useDispatch();
-  const userId = useSelector(({ users }) => users.clientId);
   const usersList = useSelector(({ users }) => users.list);
   const activeConversation = useSelector(({ channels }) => channels.active);
   const [messages, setMessages] = useState([]);
-  const [usersTyping, setUsersTyping] = useState([]);
   const [newMessages, setNewMessages] = useState([]);
   const [loadingText, setLoadingText] = useState('Waking up server, please wait...');
   const client = useRef();
@@ -97,9 +101,9 @@ const App = () => {
     socket.on('user-list', usersArray => dispatch(setList(usersArray)));
     socket.on('channel-list', channelsArray => dispatch(setChannelsList(channelsArray)));
     socket.on('user-id', receivedId => dispatch(setClientId(receivedId)));
-    socket.on('replace-people-typing-aray', usersTypingArray => setUsersTyping(usersTypingArray));
-    socket.on('user-started-typing', userId => setUsersTyping(prev => [...prev, userId]));
-    socket.on('user-stopped-typing', userId => setUsersTyping(prev => prev.filter(user => user !== userId)));
+    socket.on('replace-people-typing-aray', usersTypingArray => dispatch(setUsersTyping(usersTypingArray)));
+    socket.on('user-started-typing', userId => dispatch(addTypingUser(userId)));
+    socket.on('user-stopped-typing', userId => dispatch(removeUserTyping(userId)));
     socket.on('new-channel-message', handleNewMessage);
     socket.on('spam-block', status => dispatch(setSpamBlock(status)));
 
@@ -165,25 +169,6 @@ const App = () => {
     client.current.emit('is-typing');
   };
 
-  const formatTypingAlert = userId => {
-    const filtered = usersTyping.filter(id => id !== userId);
-    if (filtered.length === 1) {
-      return `${getName(filtered[0])} is typing`;
-    }
-    if (filtered.length < 3) {
-      let alert = '';
-      filtered.forEach((user, index) => {
-        if (index !== filtered.length - 1) {
-          alert += `${getName(user)}, `;
-        } else {
-          alert += `and ${getName(user)} are typing`;
-        }
-      });
-      return alert;
-    }
-    return 'Several people are typing';
-  };
-
   return (
     <>
       <div className='filler-div'></div>
@@ -198,7 +183,6 @@ const App = () => {
           send={send}
           messages={messages}
           alertTyping={alertTyping}
-          usersTyping={formatTypingAlert(userId)}
           loadingText={loadingText}
         >
           {messages.map(messageObj => (

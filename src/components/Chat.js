@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { getName } from 'modules/userDetailsGetters';
 
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, alertTyping, usersTyping }) => {
+const Chat = ({ send, children, alertTyping }) => {
   const currentChannel = useSelector(({ channels }) => {
     const matchedChannel = channels.list.find(channel => channel.id === channels.active);
     return matchedChannel ? matchedChannel.label : '';
   });
   const spamBlock = useSelector(({ users }) => users.clientBlocked);
   const [message, setMessage] = useState('');
+
+  const usersTyping = useSelector(state => {
+    const { clientId } = state.users;
+    const { usersTyping } = state.channels;
+    const usersList = state.users.list;
+    const filtered = usersTyping.filter(id => id !== clientId);
+    if (filtered.length === 1) {
+      return `${getName(filtered[0], usersList)} is typing`;
+    }
+    if (filtered.length < 3) {
+      let alert = '';
+      filtered.forEach((user, index) => {
+        if (index !== filtered.length - 1) {
+          alert += `${getName(user, usersList)}, `;
+        } else {
+          alert += `and ${getName(user, usersList)} are typing`;
+        }
+      });
+      return alert;
+    }
+    return 'Several people are typing';
+  });
 
   const onSubmit = e => {
     e.preventDefault();
