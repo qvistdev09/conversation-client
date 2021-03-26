@@ -2,7 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import 'components/Conversations.scss';
 
-const Conversations = ({ newMessages, emitActiveConversation, children }) => {
+const Conversations = ({ emitActiveConversation, children }) => {
+  const newMessages = useSelector(({ messages }) => messages.new);
   const channelsList = useSelector(({ channels }) => channels.list);
   const activeConversation = useSelector(({ channels }) => channels.active);
   const btnClass = id => {

@@ -19,4 +19,19 @@ const clearCache = () => {
   cachedMessages = {};
 };
 
-export { getFromCache, saveInCache, clearCache };
+const cacheControl = (parsedSequence, channelId) => {
+  const missingInCache = [];
+  parsedSequence.forEach(identifier => {
+    const cachedMessage = getFromCache(channelId, identifier);
+    if (!cachedMessage) {
+      missingInCache.push(identifier);
+    }
+  });
+  return missingInCache;
+};
+
+const saveMessagesInCache = (channelId, messageObjArray) => {
+  messageObjArray.forEach(obj => saveInCache(channelId, obj));
+};
+
+export { getFromCache, saveInCache, clearCache, cacheControl, saveMessagesInCache };

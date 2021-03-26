@@ -1,9 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import 'components/Users.scss';
 
 import UserIcon from 'components/UserIcon';
 
-const Users = ({ userlist = [] }) => {
+const Users = () => {
+  const userlist = useSelector(({ users }) => users.list.filter(user => user.online));
   return (
     <aside className='users'>
       {userlist.map(user => (

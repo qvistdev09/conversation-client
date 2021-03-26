@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getName } from 'modules/userDetailsGetters';
+import { getName, getIcon, getColor } from 'modules/userDetailsGetters';
 
+import ChatContent from 'components/ChatContent';
+import UserIcon from 'components/UserIcon';
 import 'components/Chat.scss';
 
-const Chat = ({ send, children, alertTyping }) => {
+const Chat = ({ send, alertTyping }) => {
+  const messages = useSelector(({messages}) => messages.constructed);
   const currentChannel = useSelector(({ channels }) => {
     const matchedChannel = channels.list.find(channel => channel.id === channels.active);
     return matchedChannel ? matchedChannel.label : '';
   });
   const spamBlock = useSelector(({ users }) => users.clientBlocked);
   const [message, setMessage] = useState('');
-
+  const usersList = useSelector(({users}) => users.list);
   const usersTyping = useSelector(state => {
     const { clientId } = state.users;
     const { usersTyping } = state.channels;
@@ -34,16 +37,16 @@ const Chat = ({ send, children, alertTyping }) => {
     return 'Several people are typing';
   });
 
+  useEffect(() => {
+    const container = document.querySelector('.chat__messages');
+    container.scrollTop = container.scrollHeight;
+  });
+
   const onSubmit = e => {
     e.preventDefault();
     send(message);
     setMessage('');
   };
-
-  useEffect(() => {
-    const container = document.querySelector('.chat__messages');
-    container.scrollTop = container.scrollHeight;
-  });
 
   const handleOnChange = e => {
     alertTyping();
@@ -56,7 +59,18 @@ const Chat = ({ send, children, alertTyping }) => {
         <span style={{ opacity: currentChannel !== '' ? '1' : '0' }}>#</span>
         {currentChannel}
       </h2>
-      <div className='chat__messages'>{children}</div>
+      <div className='chat__messages'>
+        {messages.map(messageObj => (
+          <ChatContent user={getName(messageObj.userId, usersList)} messageObj={messageObj} key={messageObj.messageId}>
+            <UserIcon
+              icon={getIcon(messageObj.userId, usersList)}
+              size='2.3rem'
+              margin='0'
+              background={getColor(messageObj.userId, usersList)}
+            />
+          </ChatContent>
+        ))}
+      </div>
       <div className='chat__form-container'>
         {usersTyping !== '' && (
           <p className='chat__typingalert'>
