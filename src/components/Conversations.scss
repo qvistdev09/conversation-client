@@ -39,6 +39,10 @@
   color: $hoverprimary;
 }
 
+.conversations__channelBtn:disabled {
+  opacity: 0.35;
+}
+
 .conversations__add-channel {
   display: flex;
 }
@@ -61,6 +65,10 @@
 .conversations__add-channel-btn:hover {
   color: $hoverprimary;
   border-color: $hoverprimary;
+}
+
+.conversations__add-channel-btn:disabled {
+  opacity: 0.35;
 }
 
 .conversations__add-channel-form {

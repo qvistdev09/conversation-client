@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 const AddChannelBtn = ({ createChannel }) => {
+  const connected = useSelector(({ appStatus }) => appStatus.connected);
   const [edit, setEdit] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -35,7 +37,7 @@ const AddChannelBtn = ({ createChannel }) => {
           />
         </form>
       ) : (
-        <button className='conversations__add-channel-btn' onClick={() => setEdit(true)}>
+        <button className='conversations__add-channel-btn' onClick={() => setEdit(true)} disabled={!connected}>
           + Add Channel
         </button>
       )}

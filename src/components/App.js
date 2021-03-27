@@ -10,6 +10,7 @@ import {
 } from 'reducers/slices/channels';
 import buildMessages from 'reducers/thunks/buildMessages';
 import { addOneNewInChannel, clearAllNew } from 'reducers/slices/messages';
+import { setConnectedStatus, setStatusText } from 'reducers/slices/appStatus';
 import { io } from 'socket.io-client';
 import getServer from 'config/server-url';
 
@@ -42,6 +43,7 @@ const App = () => {
   useEffect(() => {
     client.current = io(getServer());
     const socket = client.current;
+    socket.on('is-connected', () => dispatch(setConnectedStatus(true)));
     socket.on('clear-cache', () => clearCache());
     socket.on('user-list', usersArray => dispatch(setList(usersArray)));
     socket.on('channel-list', channelsArray => dispatch(setChannelsList(channelsArray)));
@@ -52,6 +54,10 @@ const App = () => {
     socket.on('new-channel-message', channelId => dispatch(addOneNewInChannel(channelId)));
     socket.on('spam-block', status => dispatch(setSpamBlock(status)));
     socket.on('new-sequence', (sequence, channelId) => dispatch(buildMessages(sequence, channelId, retrieveMessages)));
+    socket.on('disconnect', () => {
+      dispatch(setConnectedStatus(false));
+      dispatch(setStatusText('Lost connection with server, reconnecting...'));
+    });
 
     return () => {
       socket.close();

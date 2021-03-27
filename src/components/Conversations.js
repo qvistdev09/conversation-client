@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import 'components/Conversations.scss';
 
 const Conversations = ({ emitActiveConversation, children }) => {
+  const connected = useSelector(({ appStatus }) => appStatus.connected);
   const newMessages = useSelector(({ messages }) => messages.new);
   const channelsList = useSelector(({ channels }) => channels.list);
   const activeConversation = useSelector(({ channels }) => channels.active);
@@ -24,7 +25,7 @@ const Conversations = ({ emitActiveConversation, children }) => {
   return (
     <nav className='conversations'>
       {channelsList.map(channel => (
-        <button className={btnClass(channel.id)} key={channel.id} onClick={() => emitActiveConversation(channel.id)}>
+        <button className={btnClass(channel.id)} key={channel.id} onClick={() => emitActiveConversation(channel.id)} disabled={!connected}>
           <span>#</span>
           {channel.label}
           {shouldDisplay(channel.id) && newInChannel(channel.id) !== '' && (

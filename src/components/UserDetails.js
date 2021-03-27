@@ -4,6 +4,7 @@ import { getClientName, getClientColor, getClientIcon } from 'reducers/slices/us
 import UserIcon from 'components/UserIcon';
 
 const UserDetails = ({ setUserName }) => {
+  const connected = useSelector(({ appStatus }) => appStatus.connected);
   const [usernameEdit, setUsernameEdit] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const clientName = useSelector(getClientName);
@@ -44,7 +45,7 @@ const UserDetails = ({ setUserName }) => {
           />
         </form>
       ) : (
-        <button className='header__name-btn' onClick={startEdit}>
+        <button className='header__name-btn' onClick={startEdit} disabled={!connected}>
           {clientName}
         </button>
       )}

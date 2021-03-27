@@ -7,14 +7,15 @@ import UserIcon from 'components/UserIcon';
 import 'components/Chat.scss';
 
 const Chat = ({ send, alertTyping }) => {
-  const messages = useSelector(({messages}) => messages.constructed);
+  const appStatus = useSelector(({ appStatus }) => appStatus);
+  const messages = useSelector(({ messages }) => messages.constructed);
   const currentChannel = useSelector(({ channels }) => {
     const matchedChannel = channels.list.find(channel => channel.id === channels.active);
     return matchedChannel ? matchedChannel.label : '';
   });
   const spamBlock = useSelector(({ users }) => users.clientBlocked);
   const [message, setMessage] = useState('');
-  const usersList = useSelector(({users}) => users.list);
+  const usersList = useSelector(({ users }) => users.list);
   const usersTyping = useSelector(state => {
     const { clientId } = state.users;
     const { usersTyping } = state.channels;
@@ -60,16 +61,27 @@ const Chat = ({ send, alertTyping }) => {
         {currentChannel}
       </h2>
       <div className='chat__messages'>
-        {messages.map(messageObj => (
-          <ChatContent user={getName(messageObj.userId, usersList)} messageObj={messageObj} key={messageObj.messageId}>
-            <UserIcon
-              icon={getIcon(messageObj.userId, usersList)}
-              size='2.3rem'
-              margin='0'
-              background={getColor(messageObj.userId, usersList)}
-            />
-          </ChatContent>
-        ))}
+        {appStatus.connected ? (
+          messages.map(messageObj => (
+            <ChatContent
+              user={getName(messageObj.userId, usersList)}
+              messageObj={messageObj}
+              key={messageObj.messageId}
+            >
+              <UserIcon
+                icon={getIcon(messageObj.userId, usersList)}
+                size='2.3rem'
+                margin='0'
+                background={getColor(messageObj.userId, usersList)}
+              />
+            </ChatContent>
+          ))
+        ) : (
+          <div className='chat__loadingdiv'>
+            <i className='fas fa-sync-alt chat__loadingicon'></i>
+            <p className='chat__loadingtext'>{appStatus.statusText}</p>
+          </div>
+        )}
       </div>
       <div className='chat__form-container'>
         {usersTyping !== '' && (
@@ -87,10 +99,13 @@ const Chat = ({ send, alertTyping }) => {
             value={message}
             onChange={handleOnChange}
             required
-            disabled={spamBlock}
+            disabled={spamBlock || !appStatus.connected}
             placeholder={spamBlock ? 'Please hold back a bit on your messages!' : 'Type here!'}
+            style={{ opacity: appStatus.connected ? 1 : 0.35 }}
           />
-          <button className='chat__button'>Send</button>
+          <button className='chat__button' disabled={!appStatus.connected}>
+            Send
+          </button>
         </form>
       </div>
     </main>
