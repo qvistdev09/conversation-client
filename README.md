@@ -18,6 +18,9 @@ The back-end is a Node.js server hosted on Heroku.
 
 ## Tech stuff
 
+Want to see the repo for the server? Here it is:
+https://github.com/qvistdev09/conversation-server
+
 ### Front-end
 
 * React
